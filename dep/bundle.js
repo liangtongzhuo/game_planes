@@ -277,7 +277,7 @@ class Main {
    * 帧数取模定义成生成的频率
    */
   enemyGenerate() {
-    if ( databus.frame % 30 === 0 ) {
+    if ( databus.frame % 10 === 0 ) {
       let enemy = databus.pool.getItemByClass('enemy', __WEBPACK_IMPORTED_MODULE_1__npc_enemy__["a" /* default */])
       enemy.init(6)
       databus.enemys.push(enemy)
@@ -379,7 +379,7 @@ class Main {
     this.update()
     this.render()
 
-    if ( databus.frame % 20 === 0 ) {
+    if ( databus.frame % 1 === 0 ) {
       this.player.shoot()
       this.music.playShoot()
     }
