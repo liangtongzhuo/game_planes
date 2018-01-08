@@ -379,7 +379,7 @@ class Main {
     this.update()
     this.render()
 
-    if ( databus.frame % 5 === 0 ) {
+    if ( databus.frame % 10 === 0 ) {
       this.player.shoot()
       this.music.playShoot()
     }
