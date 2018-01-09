@@ -28,7 +28,9 @@ ws.onmessage = function (e) {
         databus.enemys.push(enemy)
     }
     // 创建其他用户飞机
-
+    if (data.aircrafts){
+        
+    }
 }
 ws.onclose = function (e) {
     console.log('close:', e)
