@@ -19,23 +19,27 @@ let databus = new DataBus()
  */
 export default class Main {
   constructor() {
-    this.restart()
+    this.start()
   }
 
-  restart() {
-    databus.reset()
-
+  // 开始
+  start() {
     canvas.removeEventListener(
       'touchstart',
       this.touchHandler
     )
-
+    
     this.bg = new BackGround(ctx)
     this.player = new Player(ctx)
     this.gameinfo = new GameInfo()
     this.music = new Music()
 
     this.loop()
+  }
+
+  // 重新开始
+  restart() {
+    databus.restart()
   }
 
   // 全局碰撞检测
@@ -128,19 +132,18 @@ export default class Main {
     this.update()
     this.render()
 
-    if (databus.frame % 20 === 0) {
+    // 20帧一发子弹，游戏是否结束 
+    if (databus.frame % 20 === 0 && !databus.gameOver) {
       this.player.shoot()
       this.music.playShoot()
     }
 
-    // 游戏结束停止帧循环
+    // 游戏结束
+    canvas.removeEventListener('touchstart', this.touchHandler)
     if (databus.gameOver) {
       this.gameinfo.renderGameOver(ctx, databus.score)
-
       this.touchHandler = this.touchEventHandler.bind(this)
       canvas.addEventListener('touchstart', this.touchHandler)
-
-      return
     }
 
     window.requestAnimationFrame(

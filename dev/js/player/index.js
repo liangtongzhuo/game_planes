@@ -1,14 +1,14 @@
-import Sprite   from '../base/sprite'
-import Bullet   from './bullet'
-import DataBus  from '../databus'
+import Sprite from '../base/sprite'
+import Bullet from './bullet'
+import DataBus from '../databus'
 
-const screenWidth    = window.innerWidth
-const screenHeight   = window.innerHeight
+const screenWidth = window.innerWidth
+const screenHeight = window.innerHeight
 
 // 玩家相关常量设置
 const PLAYER_IMG_SRC = 'images/hero.png'
-const PLAYER_WIDTH   = 80
-const PLAYER_HEIGHT  = 80
+const PLAYER_WIDTH = 80
+const PLAYER_HEIGHT = 80
 
 let databus = new DataBus()
 
@@ -39,10 +39,10 @@ export default class Player extends Sprite {
   checkIsFingerOnAir(x, y) {
     const deviation = 30
 
-    return !!(   x >= this.x - deviation
-              && y >= this.y - deviation
-              && x <= this.x + this.width + deviation
-              && y <= this.y + this.height + deviation  )
+    return !!(x >= this.x - deviation
+      && y >= this.y - deviation
+      && x <= this.x + this.width + deviation
+      && y <= this.y + this.height + deviation)
   }
 
   /**
@@ -54,20 +54,22 @@ export default class Player extends Sprite {
     let disX = x - this.width / 2
     let disY = y - this.height / 2
 
-    if ( disX < 0 )
+    if (disX < 0)
       disX = 0
 
-    else if ( disX > screenWidth - this.width )
+    else if (disX > screenWidth - this.width)
       disX = screenWidth - this.width
 
-    if ( disY <= 0 )
+    if (disY <= 0)
       disY = 0
 
-    else if ( disY > screenHeight - this.height )
+    else if (disY > screenHeight - this.height)
       disY = screenHeight - this.height
 
     this.x = disX
     this.y = disY
+
+    databus.setAircraft(x, y)
   }
 
   /**
@@ -81,7 +83,7 @@ export default class Player extends Sprite {
       let x = e.touches[0].clientX
       let y = e.touches[0].clientY
 
-      if ( this.checkIsFingerOnAir(x, y) ) {
+      if (this.checkIsFingerOnAir(x, y)) {
         this.touched = true
 
         this.setAirPosAcrossFingerPosZ(x, y)
@@ -95,7 +97,7 @@ export default class Player extends Sprite {
       let x = e.touches[0].clientX
       let y = e.touches[0].clientY
 
-      if ( this.touched )
+      if (this.touched)
         this.setAirPosAcrossFingerPosZ(x, y)
 
     }).bind(this))

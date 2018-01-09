@@ -14,20 +14,23 @@ export default class DataBus {
 
     this.pool = new Pool()
 
-    this.reset()
-  }
-
-  reset() {
     this.frame = 0
     this.score = 0
     this.bullets = []
     this.enemys = []
     this.animations = []
     this.gameOver = false
+    this.aircraft = {}
+  }
+
+  // 继续
+  restart() {
+    this.score = 0
+    this.gameOver = true
   }
 
   /**
-   * 回收敌人，进入对象池
+   * 边界判断回收敌人，进入对象池
    * 此后不进入帧循环
    */
   removeEnemey() {
@@ -54,5 +57,12 @@ export default class DataBus {
     temp.visible = false
 
     this.pool.recover('bullet', bullet)
+  }
+
+  /**
+   * 设置飞机状态
+   */
+  setAircraft(x, y) {
+    this.aircraft = { x, y }
   }
 }
