@@ -7,7 +7,7 @@ let instance
  */
 export default class DataBus {
   constructor() {
-    if ( instance )
+    if (instance)
       return instance
 
     instance = this
@@ -18,24 +18,29 @@ export default class DataBus {
   }
 
   reset() {
-    this.frame      = 0
-    this.score      = 0
-    this.bullets    = []
-    this.enemys     = []
+    this.frame = 0
+    this.score = 0
+    this.bullets = []
+    this.enemys = []
     this.animations = []
-    this.gameOver   = false
+    this.gameOver = false
   }
 
   /**
    * 回收敌人，进入对象池
    * 此后不进入帧循环
    */
-  removeEnemey(enemy) {
-    let temp = this.enemys.shift()
+  removeEnemey() {
+    for (let i = 0; i < this.enemys.length; i++) {
+      const enemy = this.enemys[i];
+      // 是否出边界
+      if (enemy.y > window.innerHeight + enemy.height) {
+        this.enemys.splice(i, 1)
+        enemy.visible = false
+        this.pool.recover('enemy', enemy)
+      }
+    }
 
-    temp.visible = false
-
-    this.pool.recover('enemy', enemy)
   }
 
   /**
@@ -43,6 +48,7 @@ export default class DataBus {
    * 此后不进入帧循环
    */
   removeBullets(bullet) {
+
     let temp = this.bullets.shift()
 
     temp.visible = false

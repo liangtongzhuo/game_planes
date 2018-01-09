@@ -1,13 +1,13 @@
 import Animation from '../base/animation'
 import DataBus from '../databus'
-
+// 飞机
 const ENEMY_IMG_SRC = 'images/enemy.png'
 const ENEMY_WIDTH = 60
 const ENEMY_HEIGHT = 60
+// 爆炸
+const EXPLO_IMG_PREFIX = 'images/explosion'
+const EXPLO_FRAME_COUNT = 19
 
-const __ = {
-  speed: Symbol('speed')
-}
 
 let databus = new DataBus()
 
@@ -22,11 +22,10 @@ export default class Enemy extends Animation {
     this.initExplosionAnimation()
   }
 
-  init(speed) {
-    this.x = rnd(0, window.innerWidth - ENEMY_WIDTH)
+  init(time, speed, x) {
+    this.x = x * window.innerWidth
     this.y = -this.height
-
-    this[__.speed] = speed
+    this.speed = speed
 
     this.visible = true
   }
@@ -34,9 +33,6 @@ export default class Enemy extends Animation {
   // 预定义爆炸的帧动画
   initExplosionAnimation() {
     let frames = []
-
-    const EXPLO_IMG_PREFIX = 'images/explosion'
-    const EXPLO_FRAME_COUNT = 19
 
     for (let i = 0; i < EXPLO_FRAME_COUNT; i++) {
       frames.push(EXPLO_IMG_PREFIX + (i + 1) + '.png')
@@ -47,10 +43,10 @@ export default class Enemy extends Animation {
 
   // 每一帧更新子弹位置
   update() {
-    this.y += this[__.speed]
+    this.y += this.speed
 
     // 对象回收
-    if (this.y > window.innerHeight + this.height)
-      databus.removeEnemey(this)
+    databus.removeEnemey()
+
   }
 }
