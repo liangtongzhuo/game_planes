@@ -221,7 +221,7 @@ class Sprite {
 
 
 
-const BULLET_IMG_SRC = 'images/bullet.png'
+const BULLET_IMG_SRC = './images/bullet.png'
 const BULLET_WIDTH   = 16
 const BULLET_HEIGHT  = 30
 
@@ -268,11 +268,11 @@ class Bullet extends __WEBPACK_IMPORTED_MODULE_0__base_sprite__["a" /* default *
 
 
 // 飞机
-const ENEMY_IMG_SRC = 'images/enemy.png'
+const ENEMY_IMG_SRC = './images/enemy.png'
 const ENEMY_WIDTH = 60
 const ENEMY_HEIGHT = 60
 // 爆炸
-const EXPLO_IMG_PREFIX = 'images/explosion'
+const EXPLO_IMG_PREFIX = './images/explosion'
 const EXPLO_FRAME_COUNT = 19
 
 
@@ -405,13 +405,13 @@ class Music {
 
     this.bgmAudio = new Audio()
     this.bgmAudio.loop = true
-    this.bgmAudio.src  = 'audio/bgm.mp3'
+    this.bgmAudio.src  = './audio/bgm.mp3'
 
     this.shootAudio     = new Audio()
-    this.shootAudio.src = 'audio/bullet.mp3'
+    this.shootAudio.src = './audio/bullet.mp3'
 
     this.boomAudio     = new Audio()
-    this.boomAudio.src = 'audio/boom.mp3'
+    this.boomAudio.src = './audio/boom.mp3'
 
     this.playBgm()
   }
@@ -665,7 +665,7 @@ const screenWidth = window.innerWidth
 const screenHeight = window.innerHeight
 
 // 玩家相关常量设置
-const PLAYER_IMG_SRC = 'images/hero.png'
+const PLAYER_IMG_SRC = './images/hero.png'
 const PLAYER_WIDTH = 80
 const PLAYER_HEIGHT = 80
 
@@ -976,7 +976,7 @@ class Animation extends __WEBPACK_IMPORTED_MODULE_0__sprite__["a" /* default */]
 const screenWidth  = window.innerWidth
 const screenHeight = window.innerHeight
 
-const BG_IMG_SRC   = 'images/bg.jpg'
+const BG_IMG_SRC   = './images/bg.jpg'
 const BG_WIDTH     = 512
 const BG_HEIGHT    = 512
 
@@ -1045,7 +1045,7 @@ const screenWidth  = window.innerWidth
 const screenHeight = window.innerHeight
 
 let atlas = new Image()
-atlas.src = 'images/Common.png'
+atlas.src = './images/Common.png'
 
 class GameInfo {
   renderGameScore(ctx, score) {

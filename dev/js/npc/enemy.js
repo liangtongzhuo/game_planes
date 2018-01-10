@@ -1,11 +1,11 @@
 import Animation from '../base/animation'
 import DataBus from '../databus'
 // 飞机
-const ENEMY_IMG_SRC = 'images/enemy.png'
+const ENEMY_IMG_SRC = './images/enemy.png'
 const ENEMY_WIDTH = 60
 const ENEMY_HEIGHT = 60
 // 爆炸
-const EXPLO_IMG_PREFIX = 'images/explosion'
+const EXPLO_IMG_PREFIX = './images/explosion'
 const EXPLO_FRAME_COUNT = 19
 
 
