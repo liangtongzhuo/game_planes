@@ -1,5 +1,8 @@
 import Pool from './base/pool'
 
+const screenWidth = window.innerWidth
+const screenHeight = window.innerHeight
+
 let instance
 
 /**
@@ -18,15 +21,17 @@ export default class DataBus {
     this.score = 0
     this.bullets = []
     this.enemys = []
+    this.others = []
     this.animations = []
     this.gameOver = false
     this.aircraft = {}
+    this.id = parseInt(Math.random() * 1000000)
   }
 
   // 继续
   restart() {
     this.score = 0
-    this.gameOver = true
+    this.gameOver = false
   }
 
   /**
@@ -63,6 +68,7 @@ export default class DataBus {
    * 设置飞机状态
    */
   setAircraft(x, y) {
-    this.aircraft = { x, y }
+    this.aircraft.x = x / screenWidth
+    this.aircraft.y = y / screenHeight
   }
 }

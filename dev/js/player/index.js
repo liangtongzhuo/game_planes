@@ -27,6 +27,8 @@ export default class Player extends Sprite {
 
     // 初始化事件监听
     this.initEvent()
+
+    databus.setAircraft(this.x, this.y)
   }
 
   /**
