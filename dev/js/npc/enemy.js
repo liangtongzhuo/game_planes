@@ -23,6 +23,7 @@ export default class Enemy extends Animation {
   }
 
   init(time, speed, x) {
+    this.time = time
     this.x = x * window.innerWidth
     this.y = -this.height
     this.speed = speed
@@ -41,7 +42,7 @@ export default class Enemy extends Animation {
     this.initFrames(frames)
   }
 
-  // 每一帧更新子弹位置
+  // 每一帧
   update() {
     this.y += this.speed
 

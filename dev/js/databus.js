@@ -22,6 +22,7 @@ export default class DataBus {
     this.bullets = []
     this.enemys = []
     this.others = []
+    this.wreck = []
     this.animations = []
     this.gameOver = false
     this.aircraft = {}
@@ -56,12 +57,15 @@ export default class DataBus {
    * 此后不进入帧循环
    */
   removeBullets(bullet) {
-
-    let temp = this.bullets.shift()
-
-    temp.visible = false
-
-    this.pool.recover('bullet', bullet)
+    for (let i = 0; i < this.bullets.length; i++) {
+      const bullet = this.bullets[i];
+      // 是否出边界
+      if (bullet.y <  -bullet.height) {
+        this.bullets.splice(i, 1)
+        bullet.visible = false
+        this.pool.recover('bullet', bullet)
+      }
+    }
   }
 
   /**

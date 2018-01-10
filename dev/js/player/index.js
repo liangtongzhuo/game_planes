@@ -71,7 +71,7 @@ export default class Player extends Sprite {
     this.x = disX
     this.y = disY
 
-    databus.setAircraft(x, y)
+    databus.setAircraft(this.x, this.y)
   }
 
   /**

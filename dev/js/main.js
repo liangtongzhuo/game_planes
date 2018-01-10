@@ -53,9 +53,10 @@ export default class Main {
         if (!enemy.isPlaying && enemy.isCollideWith(bullet)) {
           enemy.playAnimation()
           this.music.playExplosion()
-
           bullet.visible = false
           databus.score += 1
+
+          databus.wreck.push(enemy.time)
           break
         }
       }
@@ -74,7 +75,6 @@ export default class Main {
   //游戏结束后的触摸事件处理逻辑
   touchEventHandler(e) {
     e.preventDefault()
-
     let x = e.touches[0].clientX
     let y = e.touches[0].clientY
 
@@ -138,6 +138,11 @@ export default class Main {
     if (databus.frame % 20 === 0 && !databus.gameOver) {
       this.player.shoot()
       this.music.playShoot()
+
+      // 其他用户发射
+      databus.others.forEach((other)=>{
+        other.shoot()
+      })
     }
 
     // 游戏结束

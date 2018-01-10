@@ -1,9 +1,11 @@
 import DataBus from './databus'
 import Enemy from './npc/enemy'
 import Other from './npc/other'
+import Music from './runtime/music'
 
 
-let databus = new DataBus()
+const databus = new DataBus()
+const music = new Music()
 
 /**
  * 
@@ -20,7 +22,6 @@ ws.onopen = function (e) {
  */
 ws.onmessage = function (e) {
     if (!e.data) return
-
     const data = JSON.parse(e.data)
     // 创建飞机
     if (data.enemy && data.enemy.time && data.enemy.speed && data.enemy.x) {
@@ -30,6 +31,10 @@ ws.onmessage = function (e) {
         databus.enemys.push(enemy)
     }
 
+    //清空其他用户的飞机状态
+    if (data.clone) {
+        databus.others = []
+    }
     // 创建其他用户飞机
     if (data.arr) {
         // 根据 id 查找，如果没有再添加
@@ -54,6 +59,17 @@ ws.onmessage = function (e) {
         }
     }
 
+    // 这里判断敌机是否坠毁
+    if (data.wreck && data.wreck.length) {
+        databus.enemys.forEach(enemy => {
+            data.wreck.forEach(wreck_ => {
+                // 敌机坠毁
+                if (enemy.time === wreck_)
+                    enemy.playAnimation()
+                    music.playExplosion()
+            })
+        })
+    }
 
 }
 ws.onclose = function (e) {
@@ -69,5 +85,10 @@ setInterval(() => {
     // 飞机状态
     data.aircraft = databus.aircraft
     data.id = databus.id
+
+    // 飞机击毁消息
+    data.wreck = databus.wreck
+    databus.wreck = []
+
     ws.send(JSON.stringify(data))
 }, 1000 / 30);

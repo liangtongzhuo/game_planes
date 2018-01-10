@@ -31,6 +31,6 @@ export default class Bullet extends Sprite {
 
     // 超出屏幕外回收自身
     if ( this.y < -this.height )
-      databus.removeBullets(this)
+      databus.removeBullets()
   }
 }
