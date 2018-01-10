@@ -29,7 +29,7 @@ export default class Main {
       'touchstart',
       this.touchHandler
     )
-    
+
     this.bg = new BackGround(ctx)
     this.player = new Player(ctx)
     this.gameinfo = new GameInfo()
@@ -47,7 +47,7 @@ export default class Main {
   collisionDetection() {
 
     databus.bullets.forEach((bullet) => {
-      for (let i = 0, il = databus.enemys.length; i < il; i++) {
+      for (let i = 0; i < databus.enemys.length; i++) {
         let enemy = databus.enemys[i]
 
         if (!enemy.isPlaying && enemy.isCollideWith(bullet)) {
@@ -62,7 +62,7 @@ export default class Main {
       }
     })
 
-    for (let i = 0, il = databus.enemys.length; i < il; i++) {
+    for (let i = 0; i < databus.enemys.length; i++) {
       let enemy = databus.enemys[i]
       if (this.player.isCollideWith(enemy)) {
         databus.gameOver = true
@@ -140,7 +140,7 @@ export default class Main {
       this.music.playShoot()
 
       // 其他用户发射
-      databus.others.forEach((other)=>{
+      databus.others.forEach((other) => {
         other.shoot()
       })
     }

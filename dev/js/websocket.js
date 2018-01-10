@@ -11,7 +11,7 @@ const music = new Music()
  * 
  * web socket 
  */
-const ws = new WebSocket('ws://localhost:4001');
+const ws = new WebSocket('ws://101.201.67.198:4001');
 ws.onopen = function (e) {
     console.log('open:', e)
 }

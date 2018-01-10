@@ -516,7 +516,7 @@ class Main {
       'touchstart',
       this.touchHandler
     )
-    
+
     this.bg = new __WEBPACK_IMPORTED_MODULE_3__runtime_background__["a" /* default */](ctx)
     this.player = new __WEBPACK_IMPORTED_MODULE_0__player_index__["a" /* default */](ctx)
     this.gameinfo = new __WEBPACK_IMPORTED_MODULE_4__runtime_gameinfo__["a" /* default */]()
@@ -534,7 +534,7 @@ class Main {
   collisionDetection() {
 
     databus.bullets.forEach((bullet) => {
-      for (let i = 0, il = databus.enemys.length; i < il; i++) {
+      for (let i = 0; i < databus.enemys.length; i++) {
         let enemy = databus.enemys[i]
 
         if (!enemy.isPlaying && enemy.isCollideWith(bullet)) {
@@ -549,7 +549,7 @@ class Main {
       }
     })
 
-    for (let i = 0, il = databus.enemys.length; i < il; i++) {
+    for (let i = 0; i < databus.enemys.length; i++) {
       let enemy = databus.enemys[i]
       if (this.player.isCollideWith(enemy)) {
         databus.gameOver = true
@@ -627,7 +627,7 @@ class Main {
       this.music.playShoot()
 
       // 其他用户发射
-      databus.others.forEach((other)=>{
+      databus.others.forEach((other) => {
         other.shoot()
       })
     }
@@ -1130,7 +1130,7 @@ const music = new __WEBPACK_IMPORTED_MODULE_3__runtime_music__["a" /* default */
  * 
  * web socket 
  */
-const ws = new WebSocket('ws://localhost:4001');
+const ws = new WebSocket('ws://101.201.67.198:4001');
 ws.onopen = function (e) {
     console.log('open:', e)
 }
