@@ -134,7 +134,7 @@ export default class Main {
     this.update()
     this.render()
 
-    // 20帧一发子弹，游戏是否结束 
+    // 20帧一发子弹
     if (databus.frame % 20 === 0) {
       if (!databus.gameOver){
         this.player.shoot()

@@ -32,7 +32,7 @@ ws.onmessage = function (e) {
     }
 
     //清空其他用户的飞机状态
-    if (data.clone) {
+    if (data.close) {
         databus.others = []
     }
     // 创建其他用户飞机
