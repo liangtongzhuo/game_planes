@@ -26,7 +26,7 @@ export default class DataBus {
     this.animations = []
     this.gameOver = false
     this.aircraft = {}
-    this.id = parseInt(Math.random() * 1000000)
+    this.id = new Date().getTime()
   }
 
   // 继续

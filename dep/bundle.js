@@ -622,7 +622,7 @@ class Main {
     this.render()
 
     // 20帧一发子弹，游戏是否结束 
-    if (databus.frame % 20 === 0 && !databus.gameOver) {
+    if (databus.frame % 8 === 0 && !databus.gameOver) {
       this.player.shoot()
       this.music.playShoot()
 

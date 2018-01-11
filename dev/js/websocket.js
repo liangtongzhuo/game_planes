@@ -11,7 +11,7 @@ const music = new Music()
  * 
  * web socket 
  */
-const ws = new WebSocket('ws://101.201.67.198:4001');
+const ws = new WebSocket('ws://localhost:4001');
 ws.onopen = function (e) {
     console.log('open:', e)
 }
@@ -50,6 +50,7 @@ ws.onmessage = function (e) {
                 }
             }
             // 创建其他飞机，不是我自己
+            console.log('-----',air);
             if (!bool && air.id !== databus.id) {
                 let other = databus.pool.getItemByClass('other', Other)
                 // 时间戳，速度，x%位置
@@ -64,9 +65,10 @@ ws.onmessage = function (e) {
         databus.enemys.forEach(enemy => {
             data.wreck.forEach(wreck_ => {
                 // 敌机坠毁
-                if (enemy.time === wreck_)
+                if (enemy.time === wreck_){
                     enemy.playAnimation()
                     music.playExplosion()
+                }
             })
         })
     }
@@ -84,6 +86,7 @@ const data = {}
 setInterval(() => {
     // 飞机状态
     data.aircraft = databus.aircraft
+    data.aircraft.gameOver = databus.gameOver
     data.id = databus.id
 
     // 飞机击毁消息

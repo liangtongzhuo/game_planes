@@ -20,13 +20,13 @@ export default class Other extends Sprite {
     super(PLAYER_IMG_SRC, PLAYER_WIDTH, PLAYER_HEIGHT)
     this.id = ''
   }
-
+  // id，x，y
   init(id, x_, y_) {
     this.id = id
     this.x = parseInt(x_ * screenWidth)
     this.y = parseInt(y_ * screenHeight)
   }
-
+  
   // 每一帧更新位置
   update(x_, y_) {
     this.x = parseInt(x_ * screenWidth) 
