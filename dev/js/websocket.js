@@ -45,12 +45,11 @@ ws.onmessage = function (e) {
             for (let j = 0; j < databus.others.length; j++) {
                 const other = databus.others[j]
                 if (other.id === air.id) {
-                    other.update(air.aircraft.x, air.aircraft.y)
+                    other.update(air.aircraft.x, air.aircraft.y, air.aircraft.gameOver)
                     bool = true
                 }
             }
             // 创建其他飞机，不是我自己
-            console.log('-----',air);
             if (!bool && air.id !== databus.id) {
                 let other = databus.pool.getItemByClass('other', Other)
                 // 时间戳，速度，x%位置
@@ -65,7 +64,7 @@ ws.onmessage = function (e) {
         databus.enemys.forEach(enemy => {
             data.wreck.forEach(wreck_ => {
                 // 敌机坠毁
-                if (enemy.time === wreck_){
+                if (enemy.time === wreck_) {
                     enemy.playAnimation()
                     music.playExplosion()
                 }

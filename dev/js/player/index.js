@@ -7,6 +7,8 @@ const screenHeight = window.innerHeight
 
 // 玩家相关常量设置
 const PLAYER_IMG_SRC = './images/hero.png'
+const PLAYER_IMG_SRC_BLACK = './images/black.png'
+
 const PLAYER_WIDTH = 80
 const PLAYER_HEIGHT = 80
 
@@ -72,6 +74,13 @@ export default class Player extends Sprite {
     this.y = disY
 
     databus.setAircraft(this.x, this.y)
+
+    // 是否结束了
+    if (databus.gameOver) {
+      this.img.src = PLAYER_IMG_SRC_BLACK
+    } else {
+      this.img.src = PLAYER_IMG_SRC
+    }
   }
 
   /**

@@ -135,13 +135,16 @@ export default class Main {
     this.render()
 
     // 20帧一发子弹，游戏是否结束 
-    if (databus.frame % 20 === 0 && !databus.gameOver) {
-      this.player.shoot()
-      this.music.playShoot()
+    if (databus.frame % 20 === 0) {
+      if (!databus.gameOver){
+        this.player.shoot()
+        this.music.playShoot()
+      }
 
       // 其他用户发射
       databus.others.forEach((other) => {
-        other.shoot()
+        if (!other.gameOver)
+          other.shoot()
       })
     }
 
