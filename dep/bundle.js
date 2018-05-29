@@ -1130,7 +1130,7 @@ const music = new __WEBPACK_IMPORTED_MODULE_3__runtime_music__["a" /* default */
  * 
  * web socket 
  */
-const ws = new WebSocket('ws://101.201.67.198:4001');
+const ws = new WebSocket('ws://119.27.191.55:1314');
 ws.onopen = function (e) {
     console.log('open:', e)
 }

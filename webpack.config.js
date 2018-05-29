@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   // 入口文件名称
-  entry: './dev/index.js',
+  entry: './src/index.js',
   // 输出文件名称
   output: {
       // 文件目录
