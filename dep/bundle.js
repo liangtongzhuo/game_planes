@@ -68,7 +68,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_pool__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_pool__ = __webpack_require__(11);
 
 
 const screenWidth = window.innerWidth
@@ -97,7 +97,7 @@ class DataBus {
     this.animations = []
     this.gameOver = false
     this.aircraft = {}
-    this.id = parseInt(Math.random() * 1000000)
+    this.id = new Date().getTime()
   }
 
   // 继续
@@ -263,7 +263,7 @@ class Bullet extends __WEBPACK_IMPORTED_MODULE_0__base_sprite__["a" /* default *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_animation__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_animation__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__databus__ = __webpack_require__(0);
 
 
@@ -339,7 +339,9 @@ const screenWidth = window.innerWidth
 const screenHeight = window.innerHeight
 
 // 玩家相关常量设置
-const PLAYER_IMG_SRC = '../images/other.png'
+const PLAYER_IMG_SRC = './images/other.png'
+const PLAYER_IMG_SRC_BLACK = './images/black.png'
+
 const PLAYER_WIDTH = 80
 const PLAYER_HEIGHT = 80
 
@@ -351,24 +353,33 @@ class Other extends __WEBPACK_IMPORTED_MODULE_0__base_sprite__["a" /* default */
   constructor() {
     super(PLAYER_IMG_SRC, PLAYER_WIDTH, PLAYER_HEIGHT)
     this.id = ''
+    this.gameOver = false
   }
-
-  init(id, x_, y_) {
-    this.id = id
+  // id，x，y
+  init(id_, x_, y_) {
+    this.id = id_
     this.x = parseInt(x_ * screenWidth)
     this.y = parseInt(y_ * screenHeight)
   }
 
   // 每一帧更新位置
-  update(x_, y_) {
-    this.x = parseInt(x_ * screenWidth) 
-    this.y = parseInt(y_ * screenHeight) 
+  update(x_, y_, gameOver_) {
+    this.x = parseInt(x_ * screenWidth)
+    this.y = parseInt(y_ * screenHeight)
+    this.gameOver = gameOver_
+
+    // 是否坠机了
+    if (this.gameOver){
+      this.img.src = PLAYER_IMG_SRC_BLACK
+    }else{
+      this.img.src = PLAYER_IMG_SRC
+    }
   }
 
-    /**
-   * 玩家射击操作
-   * 射击时机由外部决定
-   */
+  /**
+ * 玩家射击操作
+ * 射击时机由外部决定
+ */
   shoot() {
     let bullet = databus.pool.getItemByClass('bullet', __WEBPACK_IMPORTED_MODULE_2__player_bullet__["a" /* default */])
 
@@ -440,9 +451,18 @@ class Music {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_libs_symbol__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_index__ = __webpack_require__(7);
+
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_libs_symbol__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_libs_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__js_libs_symbol__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__js_main__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__js_main__ = __webpack_require__(9);
 
 
 
@@ -450,7 +470,7 @@ new __WEBPACK_IMPORTED_MODULE_1__js_main__["a" /* default */]()
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 /**
@@ -473,18 +493,18 @@ window.Symbol = Symbol
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__player_index__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__player_index__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__npc_enemy__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__npc_other__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__runtime_background__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__runtime_gameinfo__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__runtime_background__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__runtime_gameinfo__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__runtime_music__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__databus__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__websocket__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__websocket__ = __webpack_require__(15);
 
 
 
@@ -621,14 +641,17 @@ class Main {
     this.update()
     this.render()
 
-    // 20帧一发子弹，游戏是否结束 
-    if (databus.frame % 8 === 0 && !databus.gameOver) {
-      this.player.shoot()
-      this.music.playShoot()
+    // 20帧一发子弹
+    if (databus.frame % 20 === 0) {
+      if (!databus.gameOver){
+        this.player.shoot()
+        this.music.playShoot()
+      }
 
       // 其他用户发射
       databus.others.forEach((other) => {
-        other.shoot()
+        if (!other.gameOver)
+          other.shoot()
       })
     }
 
@@ -650,7 +673,7 @@ class Main {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -666,6 +689,8 @@ const screenHeight = window.innerHeight
 
 // 玩家相关常量设置
 const PLAYER_IMG_SRC = './images/hero.png'
+const PLAYER_IMG_SRC_BLACK = './images/black.png'
+
 const PLAYER_WIDTH = 80
 const PLAYER_HEIGHT = 80
 
@@ -731,6 +756,13 @@ class Player extends __WEBPACK_IMPORTED_MODULE_0__base_sprite__["a" /* default *
     this.y = disY
 
     databus.setAircraft(this.x, this.y)
+
+    // 是否结束了
+    if (databus.gameOver) {
+      this.img.src = PLAYER_IMG_SRC_BLACK
+    } else {
+      this.img.src = PLAYER_IMG_SRC
+    }
   }
 
   /**
@@ -791,7 +823,7 @@ class Player extends __WEBPACK_IMPORTED_MODULE_0__base_sprite__["a" /* default *
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -845,7 +877,7 @@ class Pool {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -966,7 +998,7 @@ class Animation extends __WEBPACK_IMPORTED_MODULE_0__sprite__["a" /* default */]
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1037,7 +1069,7 @@ class BackGround extends __WEBPACK_IMPORTED_MODULE_0__base_sprite__["a" /* defau
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1109,7 +1141,7 @@ class GameInfo {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1128,9 +1160,10 @@ const music = new __WEBPACK_IMPORTED_MODULE_3__runtime_music__["a" /* default */
 
 /**
  * 
- * web socket 
+ * web socket  planes-api.liangtongzhuo.com
  */
-const ws = new WebSocket('ws://119.27.191.55:1314');
+//  const ws = new WebSocket('wss://planes-api.liangtongzhuo.com/chat/');
+const ws = new WebSocket('ws://1.14.59.33:1314');
 ws.onopen = function (e) {
     console.log('open:', e)
 }
@@ -1151,7 +1184,7 @@ ws.onmessage = function (e) {
     }
 
     //清空其他用户的飞机状态
-    if (data.clone) {
+    if (data.close) {
         databus.others = []
     }
     // 创建其他用户飞机
@@ -1164,7 +1197,7 @@ ws.onmessage = function (e) {
             for (let j = 0; j < databus.others.length; j++) {
                 const other = databus.others[j]
                 if (other.id === air.id) {
-                    other.update(air.aircraft.x, air.aircraft.y)
+                    other.update(air.aircraft.x, air.aircraft.y, air.aircraft.gameOver)
                     bool = true
                 }
             }
@@ -1183,9 +1216,10 @@ ws.onmessage = function (e) {
         databus.enemys.forEach(enemy => {
             data.wreck.forEach(wreck_ => {
                 // 敌机坠毁
-                if (enemy.time === wreck_)
+                if (enemy.time === wreck_) {
                     enemy.playAnimation()
                     music.playExplosion()
+                }
             })
         })
     }
@@ -1203,6 +1237,7 @@ const data = {}
 setInterval(() => {
     // 飞机状态
     data.aircraft = databus.aircraft
+    data.aircraft.gameOver = databus.gameOver
     data.id = databus.id
 
     // 飞机击毁消息
@@ -1211,6 +1246,9 @@ setInterval(() => {
 
     ws.send(JSON.stringify(data))
 }, 1000 / 30);
+
+
+
 
 
 /***/ })
