@@ -9,9 +9,10 @@ const music = new Music()
 
 /**
  * 
- * web socket 
+ * web socket  planes-api.liangtongzhuo.com
  */
-const ws = new WebSocket('ws://119.27.191.55:1314/');
+//  const ws = new WebSocket('wss://planes-api.liangtongzhuo.com/chat/');
+const ws = new WebSocket('ws://1.14.59.33:1314');
 ws.onopen = function (e) {
     console.log('open:', e)
 }
@@ -94,3 +95,6 @@ setInterval(() => {
 
     ws.send(JSON.stringify(data))
 }, 1000 / 30);
+
+
+
