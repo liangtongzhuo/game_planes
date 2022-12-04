@@ -88,32 +88,57 @@ export default class Player extends Sprite {
    * 改变战机的位置
    */
   initEvent() {
-    canvas.addEventListener('touchstart', ((e) => {
+    let start = 'mouseenter'
+    let mover = 'mousemove'
+    let end = 'mouseleave'
+
+    // 判断手机
+    if (window.IsMobile) {
+      start = 'touchstart'
+      mover = 'touchmove'
+      end = 'touchend'
+    }
+    canvas.addEventListener(start, ((e) => {
       e.preventDefault()
 
-      let x = e.touches[0].clientX
-      let y = e.touches[0].clientY
+      let x;
+      let y;
+      if (window.IsMobile) {
+        x = e.touches[0].clientX
+        y = e.touches[0].clientY
+      } else {
+        x = e.clientX
+        y = e.clientY
+      }
 
-      if (this.checkIsFingerOnAir(x, y)) {
+
+      if (this.checkIsFingerOnAir(x, y) || !window.IsMobile) {
         this.touched = true
-
         this.setAirPosAcrossFingerPosZ(x, y)
       }
 
     }).bind(this))
 
-    canvas.addEventListener('touchmove', ((e) => {
+    canvas.addEventListener(mover, ((e) => {
       e.preventDefault()
-
-      let x = e.touches[0].clientX
-      let y = e.touches[0].clientY
+      
+      let x;
+      let y;
+      if (window.IsMobile) {
+        x = e.touches[0].clientX
+        y = e.touches[0].clientY
+      } else {
+        x = e.clientX
+        y = e.clientY
+        console.log(x,y);
+      }
 
       if (this.touched)
         this.setAirPosAcrossFingerPosZ(x, y)
 
     }).bind(this))
 
-    canvas.addEventListener('touchend', ((e) => {
+    canvas.addEventListener(end, ((e) => {
       e.preventDefault()
 
       this.touched = false

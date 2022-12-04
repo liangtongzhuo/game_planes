@@ -15,6 +15,12 @@ canvas.height = window.innerHeight
 let ctx = canvas.getContext('2d')
 let databus = new DataBus()
 
+// 游戏结束
+let clickName = 'mousedown'
+if (window.IsMobile) {
+  clickName = 'touchstart'
+}
+
 /**
  * 游戏主函数
  */
@@ -26,7 +32,7 @@ export default class Main {
   // 开始
   start() {
     canvas.removeEventListener(
-      'touchstart',
+      clickName,
       this.touchHandler
     )
 
@@ -75,8 +81,18 @@ export default class Main {
   //游戏结束后的触摸事件处理逻辑
   touchEventHandler(e) {
     e.preventDefault()
-    let x = e.touches[0].clientX
-    let y = e.touches[0].clientY
+
+    let x;
+    let y;
+    // 兼容pc
+    if (window.IsMobile) {
+      x = e.touches[0].clientX
+      y = e.touches[0].clientY
+    } else {
+      x = e.clientX
+      y = e.clientY
+    }
+
 
     let area = this.gameinfo.btnArea
 
@@ -136,7 +152,7 @@ export default class Main {
 
     // 20帧一发子弹
     if (databus.frame % 20 === 0) {
-      if (!databus.gameOver){
+      if (!databus.gameOver) {
         this.player.shoot()
         this.music.playShoot()
       }
@@ -148,12 +164,12 @@ export default class Main {
       })
     }
 
-    // 游戏结束
-    canvas.removeEventListener('touchstart', this.touchHandler)
+
+    canvas.removeEventListener(clickName, this.touchHandler)
     if (databus.gameOver) {
       this.gameinfo.renderGameOver(ctx, databus.score)
       this.touchHandler = this.touchEventHandler.bind(this)
-      canvas.addEventListener('touchstart', this.touchHandler)
+      canvas.addEventListener(clickName, this.touchHandler)
     }
 
     window.requestAnimationFrame(

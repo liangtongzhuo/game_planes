@@ -68,7 +68,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_pool__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_pool__ = __webpack_require__(12);
 
 
 const screenWidth = window.innerWidth
@@ -263,7 +263,7 @@ class Bullet extends __WEBPACK_IMPORTED_MODULE_0__base_sprite__["a" /* default *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_animation__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_animation__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__databus__ = __webpack_require__(0);
 
 
@@ -447,12 +447,10 @@ class Music {
 
 /***/ }),
 /* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_index__ = __webpack_require__(7);
-
+__webpack_require__(7);
+(function webpackMissingModule() { throw new Error("Cannot find module \"build\""); }());
 
 
 /***/ }),
@@ -460,9 +458,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_libs_symbol__ = __webpack_require__(8);
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_index__ = __webpack_require__(8);
+
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_libs_symbol__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_libs_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__js_libs_symbol__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__js_main__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__js_main__ = __webpack_require__(10);
 
 
 
@@ -470,7 +478,7 @@ new __WEBPACK_IMPORTED_MODULE_1__js_main__["a" /* default */]()
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 /**
@@ -478,7 +486,7 @@ new __WEBPACK_IMPORTED_MODULE_1__js_main__["a" /* default */]()
  * 方便模拟私有变量
  */
 
-let Symbol  = window.Symbol
+let Symbol = window.Symbol
 let idCounter = 0
 
 if (!Symbol) {
@@ -489,22 +497,33 @@ if (!Symbol) {
   Symbol.iterator = Symbol('Symbol.iterator')
 }
 
+function isMobile() {
+  return navigator.userAgent.match(
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+  );
+}
+
+
+
 window.Symbol = Symbol
 
 
+window.IsMobile = isMobile()
+
+
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__player_index__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__player_index__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__npc_enemy__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__npc_other__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__runtime_background__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__runtime_gameinfo__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__runtime_background__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__runtime_gameinfo__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__runtime_music__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__databus__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__websocket__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__websocket__ = __webpack_require__(16);
 
 
 
@@ -522,6 +541,12 @@ canvas.height = window.innerHeight
 let ctx = canvas.getContext('2d')
 let databus = new __WEBPACK_IMPORTED_MODULE_6__databus__["a" /* default */]()
 
+// 游戏结束
+let clickName = 'mousedown'
+if (window.IsMobile) {
+  clickName = 'touchstart'
+}
+
 /**
  * 游戏主函数
  */
@@ -533,7 +558,7 @@ class Main {
   // 开始
   start() {
     canvas.removeEventListener(
-      'touchstart',
+      clickName,
       this.touchHandler
     )
 
@@ -582,8 +607,18 @@ class Main {
   //游戏结束后的触摸事件处理逻辑
   touchEventHandler(e) {
     e.preventDefault()
-    let x = e.touches[0].clientX
-    let y = e.touches[0].clientY
+
+    let x;
+    let y;
+    // 兼容pc
+    if (window.IsMobile) {
+      x = e.touches[0].clientX
+      y = e.touches[0].clientY
+    } else {
+      x = e.clientX
+      y = e.clientY
+    }
+
 
     let area = this.gameinfo.btnArea
 
@@ -643,7 +678,7 @@ class Main {
 
     // 20帧一发子弹
     if (databus.frame % 20 === 0) {
-      if (!databus.gameOver){
+      if (!databus.gameOver) {
         this.player.shoot()
         this.music.playShoot()
       }
@@ -655,12 +690,12 @@ class Main {
       })
     }
 
-    // 游戏结束
-    canvas.removeEventListener('touchstart', this.touchHandler)
+
+    canvas.removeEventListener(clickName, this.touchHandler)
     if (databus.gameOver) {
       this.gameinfo.renderGameOver(ctx, databus.score)
       this.touchHandler = this.touchEventHandler.bind(this)
-      canvas.addEventListener('touchstart', this.touchHandler)
+      canvas.addEventListener(clickName, this.touchHandler)
     }
 
     window.requestAnimationFrame(
@@ -673,7 +708,7 @@ class Main {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -770,32 +805,57 @@ class Player extends __WEBPACK_IMPORTED_MODULE_0__base_sprite__["a" /* default *
    * 改变战机的位置
    */
   initEvent() {
-    canvas.addEventListener('touchstart', ((e) => {
+    let start = 'mouseenter'
+    let mover = 'mousemove'
+    let end = 'mouseleave'
+
+    // 判断手机
+    if (window.IsMobile) {
+      start = 'touchstart'
+      mover = 'touchmove'
+      end = 'touchend'
+    }
+    canvas.addEventListener(start, ((e) => {
       e.preventDefault()
 
-      let x = e.touches[0].clientX
-      let y = e.touches[0].clientY
+      let x;
+      let y;
+      if (window.IsMobile) {
+        x = e.touches[0].clientX
+        y = e.touches[0].clientY
+      } else {
+        x = e.clientX
+        y = e.clientY
+      }
 
-      if (this.checkIsFingerOnAir(x, y)) {
+
+      if (this.checkIsFingerOnAir(x, y) || !window.IsMobile) {
         this.touched = true
-
         this.setAirPosAcrossFingerPosZ(x, y)
       }
 
     }).bind(this))
 
-    canvas.addEventListener('touchmove', ((e) => {
+    canvas.addEventListener(mover, ((e) => {
       e.preventDefault()
-
-      let x = e.touches[0].clientX
-      let y = e.touches[0].clientY
+      
+      let x;
+      let y;
+      if (window.IsMobile) {
+        x = e.touches[0].clientX
+        y = e.touches[0].clientY
+      } else {
+        x = e.clientX
+        y = e.clientY
+        console.log(x,y);
+      }
 
       if (this.touched)
         this.setAirPosAcrossFingerPosZ(x, y)
 
     }).bind(this))
 
-    canvas.addEventListener('touchend', ((e) => {
+    canvas.addEventListener(end, ((e) => {
       e.preventDefault()
 
       this.touched = false
@@ -823,7 +883,7 @@ class Player extends __WEBPACK_IMPORTED_MODULE_0__base_sprite__["a" /* default *
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -877,7 +937,7 @@ class Pool {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -998,7 +1058,7 @@ class Animation extends __WEBPACK_IMPORTED_MODULE_0__sprite__["a" /* default */]
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1069,7 +1129,7 @@ class BackGround extends __WEBPACK_IMPORTED_MODULE_0__base_sprite__["a" /* defau
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1141,7 +1201,7 @@ class GameInfo {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1162,7 +1222,6 @@ const music = new __WEBPACK_IMPORTED_MODULE_3__runtime_music__["a" /* default */
  * 
  * web socket  planes-api.liangtongzhuo.com
  */
-//  const ws = new WebSocket('wss://planes-api.liangtongzhuo.com/chat/');
 const ws = new WebSocket('ws://1.14.59.33:1314');
 ws.onopen = function (e) {
     console.log('open:', e)

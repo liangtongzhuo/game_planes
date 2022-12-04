@@ -3,7 +3,7 @@
  * 方便模拟私有变量
  */
 
-let Symbol  = window.Symbol
+let Symbol = window.Symbol
 let idCounter = 0
 
 if (!Symbol) {
@@ -14,4 +14,15 @@ if (!Symbol) {
   Symbol.iterator = Symbol('Symbol.iterator')
 }
 
+function isMobile() {
+  return navigator.userAgent.match(
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+  );
+}
+
+
+
 window.Symbol = Symbol
+
+
+window.IsMobile = isMobile()
